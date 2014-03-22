@@ -1,0 +1,37 @@
+<resources>
+
+    <string name="app_name">P003_wwoWidget</string>
+
+    <string name="widgetName">wwoWidget</string>
+
+    <string name="wgtLbDate">"Date: "</string>
+
+    <string name="wdgLbToday">"Today: "</string>
+
+    <string name="wdgLbMaxTemp">"max: "</string>
+
+    <string name="wdgLbMinTemp">"min: "</string>
+
+    <string name="conStatus">"Status: "</string>
+    <string name="conActLocationAutosearch">auto location search</string>
+    <string name="conActLocationNoData">Check location search or select  city</string>
+    <string name="wthFrShowMaxTemp">max temp curve</string>
+    <string name="wthFrShowMinTemp">min temp curve</string>
+    <string name="wthFrZeroTemp">zero temp curve</string>
+    <string name="conStatusCitySelected">Selected city</string>
+    <string name="n_selcted_format">{0} selcted</string>
+    <string name="citySelectThisCity">select this city</string>
+    <string name="cityDelete">Delete</string>
+    <string name="cityEdit">Edit</string>
+    <string name="itCityAddNewCity">Add new city</string>
+    <string name="editCtCity">City</string>
+    <string name="editCtCountry">Country</string>
+    <string name="editCtLat">Latitude</string>
+    <string name="edCtLon">Longitude</string>
+    <string name="editCtBrOk">Save</string>
+    <string name="edCtBarCancel">Cancel</string>
+    <string name="editCtEnter">Enter</string>
+    <string name="edCityActWrongInput">Wrong input</string>
+  
+
+</resources>

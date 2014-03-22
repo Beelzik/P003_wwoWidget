@@ -1,0 +1,35 @@
+<resources>
+
+    <string name="app_name">P003_wwoWidget</string>
+
+    <string name="widgetName">wwoWidget</string>
+
+    <string name="wgtLbDate">"Дата: "</string>
+
+    <string name="wdgLbToday">"Сегодня: "</string>
+
+
+
+    <string name="conStatus">"Статус: "</string>
+    <string name="conActLocationAutosearch">автоматический поиск текущего местоположения</string>
+    <string name="conActLocationNoData">Выберите авто. поиск местоположения или город</string>
+    <string name="wthFrShowMaxTemp">кривая макс. температуры</string>
+    <string name="wthFrShowMinTemp">кривая мин. температуры</string>
+    <string name="wthFrZeroTemp">кривая 0-ой температуры</string>
+    <string name="conStatusCitySelected">Выбран город</string>
+    <string name="n_selcted_format">{0} Выбрано</string>
+    <string name="citySelectThisCity">Выбрать этот город</string>
+    <string name="cityDelete">Удалить</string>
+    <string name="cityEdit">Редактировать</string>
+    <string name="itCityAddNewCity">Добавить новый город</string>
+    <string name="editCtCity">Город</string>
+    <string name="editCtCountry">Страна</string>
+    <string name="editCtLat">Широта</string>
+    <string name="edCtLon">Долгота</string>
+    <string name="editCtBrOk">Сохранить</string>
+    <string name="edCtBarCancel">Отмена</string>
+    <string name="editCtEnter">Применить</string>
+    <string name="edCityActWrongInput">Ошибка ввода данных</string>
+  
+
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/tvEdCtCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editCtCity" />
+
+    <EditText
+        android:id="@+id/edCtCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/tvEdCtCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editCtCountry" />
+
+    <EditText
+        android:id="@+id/edCtCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/tcEdCtLat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editCtLat" />
+
+    <EditText
+        android:id="@+id/edCtLat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/tvEdCtLon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edCtLon" />
+
+    <EditText
+        android:id="@+id/edCtLon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btnEdCtEnter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/editCtEnter" />
+
+</LinearLayout>

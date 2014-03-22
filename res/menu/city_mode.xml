@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+ xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+ android:id="@+id/itCitySelectCity"
+  android:icon="@android:drawable/ic_menu_add"
+ android:showAsAction="always|withText"
+ android:title="@string/citySelectThisCity">
+</item>
+<item
+ android:id="@+id/itCityEdit"
+ android:icon="@android:drawable/ic_menu_edit"
+ android:showAsAction="ifRoom"
+ android:title="@string/cityEdit">
+</item>
+<item
+ android:id="@+id/itCityDelete"
+ android:icon="@android:drawable/ic_menu_delete"
+ android:showAsAction="ifRoom"
+ android:title="@string/cityDelete">
+</item>
+</menu>

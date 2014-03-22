@@ -1,0 +1,38 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.p003_wwowidget"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="18" />
+    <compatible-screens></compatible-screens>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Sherlock" android:name=".singleton.WeatherDataStorage">
+        <receiver android:name="WidgetProvider" android:label="@string/widgetName" android:icon="@drawable/ic_sunny">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="update_all_widgets"/>
+            </intent-filter>
+            <meta-data android:resource="@xml/widget_meta_data" android:name="android.appwidget.provider"/>
+        </receiver>
+        <service android:name="UpdateService"></service>
+        <activity android:name=".config.ConfigActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".config.CityActivity"></activity>
+        <activity android:name=".config.GlobalPreference"></activity>
+        <activity android:name=".config.EditCityActivity"></activity>
+    </application>
+
+</manifest>
