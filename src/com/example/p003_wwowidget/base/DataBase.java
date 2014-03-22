@@ -56,7 +56,6 @@ public class DataBase {
 	
 	
 	public void open(){
-		Log.d("DBLog", "open()");
 		dbLite=dbH.getWritableDatabase();
 	}
 	
