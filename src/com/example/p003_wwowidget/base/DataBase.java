@@ -18,9 +18,9 @@ import android.util.Log;
 
 public class DataBase {
 	
-	SQLiteDatabase dbLite;
-	DBHelper dbH;
-	Context context;
+	private SQLiteDatabase dbLite;
+	private DBHelper dbH;
+	private Context context;
 	int id;
 	public static final String DB_NAME="city";
 	public static final int DB_VERSION=1;
