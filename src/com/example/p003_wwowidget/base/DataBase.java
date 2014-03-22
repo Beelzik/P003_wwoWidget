@@ -62,7 +62,6 @@ public class DataBase {
 	
 	public void close(){
 		if(dbH!=null) dbH.close();
-		Log.d("DBLog", "close()");
 	}
 	
 	
