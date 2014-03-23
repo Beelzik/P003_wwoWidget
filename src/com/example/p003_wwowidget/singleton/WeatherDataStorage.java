@@ -101,10 +101,15 @@ private static String WIDGET_IDS="widget_ids";
 		
 	}
 	
-	public void getAllKey(){
+	public Set<Integer> getAllKey(){
 		 Set<Integer> set= dataMap.keySet();
+		 return set;
 	}
 	
+	
+	public void removeDataFromStorage(int key){
+		dataMap.remove(key);
+	}
 		
 	}
 	

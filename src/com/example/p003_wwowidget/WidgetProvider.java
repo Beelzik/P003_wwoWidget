@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.p003_wwowidget.singleton.WeatherDataStorage;
+
 public class WidgetProvider extends AppWidgetProvider {
 	
 	public static final String UPDATE_ALL_WIDGETS="UPDATE_ALL_WIDGETS";
@@ -81,6 +83,10 @@ public class WidgetProvider extends AppWidgetProvider {
 			    
 		      int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
 		      
+		      WeatherDataStorage storage=(WeatherDataStorage) context.getApplicationContext();
+		      
+		      Log.d("WWO3",storage.getAllKey().toString());
+		      
 		      Intent up=new Intent("com.example.p003_wwowidget.UpdateService");
 		  	context.stopService(up);
 			 up= new Intent(context, UpdateService.class);
@@ -95,6 +101,14 @@ public class WidgetProvider extends AppWidgetProvider {
 		}
 	}
 	
-	
+
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		super.onDeleted(context, appWidgetIds);
+		WeatherDataStorage storage=(WeatherDataStorage) context.getApplicationContext();
+	     for (int id : appWidgetIds) {
+			storage.removeDataFromStorage(id);
+		}	
+	}
 	
 }

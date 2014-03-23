@@ -70,9 +70,10 @@ public class ConfigActivity extends SherlockFragmentActivity
 	private Button btnSelectCity,btnExit;
 	private SharedPreferences  sp;
 	boolean autoSearchOn=false;
+	boolean citySelected=false;
 	private Intent resultValue;
 	int widgetID;
-	private boolean posetiveAnswer=true;
+	
 	private boolean minCurveOn=true;
 	private boolean maxCurveOn=true;
 	private boolean zeroTempCurve=true;
@@ -140,7 +141,6 @@ public class ConfigActivity extends SherlockFragmentActivity
 					AppWidgetManager.INVALID_APPWIDGET_ID);
 		}
 		if(widgetID==AppWidgetManager.INVALID_APPWIDGET_ID){
-			posetiveAnswer=false;
 			finish();
 		}
 		
@@ -232,7 +232,8 @@ public class ConfigActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if(item.getItemId()==android.R.id.home){
-			setResult(RESULT_OK, resultValue);
+			if(citySelected || autoSearchOn){
+			setResult(RESULT_OK, resultValue);}
 			finish();
 		}
 		return super.onOptionsItemSelected(item);
@@ -248,6 +249,7 @@ public class ConfigActivity extends SherlockFragmentActivity
 	@Override
 	public void onCheckedChanged(CompoundButton view, boolean isChecked) {
 		
+	
 		switch(view.getId()){
 		case R.id.chbLocationSearch:
 			
@@ -262,6 +264,14 @@ public class ConfigActivity extends SherlockFragmentActivity
 			if (autoSearchOn) {
 				storage.findAutoLocateData(this, widgetID, 5);
 				tvStatus.setText(R.string.conActLocationAutosearch);
+				citySelected=false;
+				Editor editor=sp.edit();
+				editor.remove(CONFIG_SP_CITY_LAT+widgetID);
+				editor.remove(CONFIG_SP_CITY_LON+widgetID);
+				editor.remove(CONFIG_SP_CITY_SELECT_+widgetID);
+				editor.remove(CONFIG_SP_CITY_NAME_+widgetID);
+				editor.remove(CONFIG_SP_CITY_COUNTRY_+widgetID);
+				editor.commit();
 			}else{
 				tvStatus.setText(R.string.conActLocationNoData);
 				
@@ -347,10 +357,11 @@ public class ConfigActivity extends SherlockFragmentActivity
 				editor.putString(CONFIG_SP_CITY_NAME_+widgetID, cityName);
 				editor.putString(CONFIG_SP_CITY_COUNTRY_+widgetID, countryName);
 				editor.commit();
-				
+				citySelected=true;
 				storage.findCityData(this, widgetID, cityLat, cityLon, 5);
 				break;
 			case RESULT_CANCELED:
+				
 				break;
 				
 			}
