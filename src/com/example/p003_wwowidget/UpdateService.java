@@ -21,9 +21,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.example.p003_wwowidget.config.ConfigActivity;
-import com.example.p003_wwowidget.singleton.OnWeatherDataStorage;
-import com.example.p003_wwowidget.singleton.WeatherDataStorage;
+import com.example.p003_wwowidget.storage.OnWeatherDataStore;
+import com.example.p003_wwowidget.storage.WeatherDataCaller;
+import com.example.p003_wwowidget.storage.WeatherDataStorage;
+import com.example.p003_wwowidget.ui.ConfigActivity;
 import com.example.p003_wwowidget.utils.BindHelper;
 import com.example.wwolibrary.OnLocaleWWOListener;
 import com.example.wwolibrary.LocaleWwoData.Data;
@@ -32,14 +33,16 @@ import com.example.wwolibrary.LocaleWwoData.Data.NearestArea;
 import com.example.wwolibrary.LocaleWwoData.Data.Request;
 import com.example.wwolibrary.LocaleWwoData.Data.Weather;
 
-public class UpdateService extends Service implements OnWeatherDataStorage{
+public class UpdateService extends Service implements OnWeatherDataStore{
 
-	public static WeatherDataStorage storage;
+	private static WeatherDataStorage storage;
+	private WeatherDataCaller caller;
 	int[] ids;
 	
 	
 	
 	RemoteViews rViews;
+	
 	boolean gotLastUpdate=false;
 
 	
@@ -65,27 +68,36 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		storage =(WeatherDataStorage) this.getApplicationContext();
+		if(intent.getIntArrayExtra("appWidgetIds")!=null){
 		ids=intent.getIntArrayExtra("appWidgetIds");
-	
+		}else{
+			
+			
+			
+			stopSelf();
+		}
 			for (int id :ids) {
+				Log.d("WWO3"," service id="+id);
 				buildUpdate(this.getBaseContext(),id);
 			}	
 		return START_STICKY;
 	}
 	
 	public void buildUpdate(Context context,int id){
+		
 		storage= (WeatherDataStorage) context.getApplicationContext();
+		caller= new WeatherDataCaller(storage);
 		SharedPreferences sp=context.getSharedPreferences(ConfigActivity.CONFIG_SP_NAME, MODE_PRIVATE);
 		if(sp.getBoolean(ConfigActivity.CONFIG_SP_SEARCH_TYPE+id, false)){
-		storage.findAutoLocateData(context, id, 5);
+		caller.callAutoLocateWthData(context, id, 5);
 
 		}else{
 			float lat, lon;
 			lat=sp.getFloat(ConfigActivity.CONFIG_SP_CITY_LAT+id, 0);
 			lon=sp.getFloat(ConfigActivity.CONFIG_SP_CITY_LON+id, 0);
-			storage.findCityData(context, id, lat,lon, 5);
+			caller.callCityWthData(context, id, lat,lon, 5);
 		}
-		storage.setOnWeatherDataStorageListener(this);
+		storage.setOnWeatherDataStoreListener(this);
 		
 		
 	}
@@ -166,7 +178,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 	}
 
 	@Override
-	public void storageWeatherData(final int widgetId) {
+	public void onStoredWthData(final int widgetId) {
 		Data data=storage.getWeatherDataById(widgetId);
 		
 		if(data!=null){

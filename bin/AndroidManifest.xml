@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock" android:name=".singleton.WeatherDataStorage">
+        android:theme="@style/Theme.Sherlock" android:name="com.example.p003_wwowidget.storage.WeatherDataStorage">
         <receiver android:name="WidgetProvider" android:label="@string/widgetName" android:icon="@drawable/ic_sunny">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -25,14 +25,14 @@
             <meta-data android:resource="@xml/widget_meta_data" android:name="android.appwidget.provider"/>
         </receiver>
         <service android:name="UpdateService"></service>
-        <activity android:name=".config.ConfigActivity">
+        <activity android:name="com.example.p003_wwowidget.ui.ConfigActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".config.CityActivity"></activity>
-        <activity android:name=".config.GlobalPreference"></activity>
-        <activity android:name=".config.EditCityActivity"></activity>
+        <activity android:name="com.example.p003_wwowidget.ui.CityActivity"></activity>
+        <activity android:name="com.example.p003_wwowidget.ui.GlobalPreference"></activity>
+        <activity android:name="com.example.p003_wwowidget.ui.EditCityActivity"></activity>
     </application>
 
 </manifest>

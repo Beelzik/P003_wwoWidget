@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.p003_wwowidget.singleton.WeatherDataStorage;
+import com.example.p003_wwowidget.storage.WeatherDataStorage;
 
 public class WidgetProvider extends AppWidgetProvider {
 	
@@ -52,6 +52,9 @@ public class WidgetProvider extends AppWidgetProvider {
 			Intent intent=new Intent("com.example.p003_wwowidget.UpdateService");
 			context.stopService(intent);
 			 intent= new Intent(context, UpdateService.class);
+			 for (int i : appWidgetIds) {
+				Log.d("WWO3","provider id="+i);
+			}
 			intent.putExtra("appWidgetIds", appWidgetIds);
 			context.startService(intent);
 				
