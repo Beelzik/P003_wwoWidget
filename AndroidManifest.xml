@@ -25,14 +25,14 @@
             <meta-data android:resource="@xml/widget_meta_data" android:name="android.appwidget.provider"/>
         </receiver>
         <service android:name="UpdateService"></service>
-        <activity android:name="com.example.p003_wwowidget.ui.ConfigActivity">
+        <activity android:name=".ui.ConfigActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.p003_wwowidget.ui.CityActivity"></activity>
-        <activity android:name="com.example.p003_wwowidget.ui.GlobalPreference"></activity>
-        <activity android:name="com.example.p003_wwowidget.ui.EditCityActivity"></activity>
+        <activity android:name=".ui.CityActivity"></activity>
+        <activity android:name=".ui.GlobalPreference"></activity>
+        <activity android:name=".ui.EditCityActivity"></activity>
     </application>
 
 </manifest>

@@ -25,8 +25,7 @@ public class DataBase {
 	public static final String DB_NAME="city";
 	public static final int DB_VERSION=1;
 	
-	    private static final String CITY_DATA_CSV = "city_data.csv"; 
-	 
+	 private static final String CITY_DATA_CSV = "city_data.csv"; 
 	 public static final String CITY_ID = BaseColumns._ID;
      public static final String CITY_NAME = "name";
      public static final String CITY_ASCII_NAME = "asciiname";

@@ -1,18 +1,22 @@
 package com.example.p003_wwowidget.ui;
 
+import java.security.Provider;
 import java.util.concurrent.TimeUnit;
 
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
+import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -63,7 +67,7 @@ public class ConfigActivity extends SherlockFragmentActivity
 	
 	private TextView tvStatus; 
 	private CheckBox chbLocationSearch;
-	private Button btnSelectCity,btnExit;
+	private Button btnSelectCity,btnLocationSetting;
 	private SharedPreferences  sp;
 	boolean autoSearchOn=false;
 	boolean citySelected=false;
@@ -85,6 +89,7 @@ public class ConfigActivity extends SherlockFragmentActivity
 	private GraphViewSeries seriesMax;
 	private GraphViewSeries seriesMin;
 	private GraphViewSeries seriesZero;
+	private LocationManager locationManager;
 	
 	BindHelper bindHelper;
 	
@@ -128,6 +133,8 @@ public class ConfigActivity extends SherlockFragmentActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		
+		//Log.d("WWO3","onCreate conf");
 		sp= getSharedPreferences(CONFIG_SP_NAME, MODE_PRIVATE);
 		
 		Intent intent=getIntent();
@@ -141,6 +148,21 @@ public class ConfigActivity extends SherlockFragmentActivity
 			finish();
 		}
 		
+		//данные кривой 0-ой температуры
+		GraphViewSeriesStyle seriesStyle= new GraphViewSeriesStyle(Color.CYAN, 2);
+		
+		
+		GraphViewData[] zeroData=new GraphViewData[]{
+				 new GraphViewData(1d,0d),
+				 new GraphViewData(2,0d),
+				 new GraphViewData(3,0d),
+				 new GraphViewData(4,0d),
+				 new GraphViewData(5,0d),};
+		seriesZero=new GraphViewSeries("zero",
+				seriesStyle,zeroData		
+		);
+		
+		
 		wgFrag=new WeatherGraphFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.ltFrGraph, wgFrag).commit();
 		
@@ -148,8 +170,12 @@ public class ConfigActivity extends SherlockFragmentActivity
 		caller=new WeatherDataCaller(storage);
 		storage.setOnWeatherDataStoreListener(this);
 		
-		new Thread(new Runnable() {
-			
+		
+		
+		
+		// в layout= (LinearLayout) wgFrag.getView().findViewById(R.id.grWth) приходит ноль, поэтому вот
+		
+		new Thread(new Runnable() {	
 			@Override
 			public void run() {
 				try {
@@ -163,30 +189,25 @@ public class ConfigActivity extends SherlockFragmentActivity
 			}
 		}).start();
 		
-		GraphViewSeriesStyle seriesStyle= new GraphViewSeriesStyle(Color.CYAN, 2);
 		
-		
-		GraphViewData[] zeroData=new GraphViewData[]{
-				 new GraphViewData(1d,0d),
-				 new GraphViewData(2,0d),
-				 new GraphViewData(3,0d),
-				 new GraphViewData(4,0d),
-				 new GraphViewData(5,0d),};
-		seriesZero=new GraphViewSeries("zero",
-				seriesStyle,zeroData		
-		);
 		autoSearchOn=sp.getBoolean(CONFIG_SP_SEARCH_TYPE+widgetID,false);
 		setContentView(R.layout.config);
 		tvStatus=(TextView) findViewById(R.id.tvConStatus) ;
 		chbLocationSearch= (CheckBox) findViewById(R.id.chbLocationSearch) ;
 		chbLocationSearch.setChecked(autoSearchOn);
 		chbLocationSearch.setOnCheckedChangeListener(this);
-		
+		chbLocationSearch.setEnabled(false);
 		
 		
 		btnSelectCity= (Button) findViewById(R.id.btnSelectCity) ;
-	
+		btnLocationSetting= (Button) findViewById(R.id.btnConLocationSetting);
+		
+		btnLocationSetting.setOnClickListener(this);
 		btnSelectCity.setOnClickListener(this);	
+		locationManager=(LocationManager) getSystemService(Service.LOCATION_SERVICE);
+		
+		controlLocationProviderStatuc();
+		
 	if (autoSearchOn) {
 		chbLocationSearch.setChecked(autoSearchOn);
 		btnSelectCity.setEnabled(!autoSearchOn);
@@ -218,7 +239,22 @@ public class ConfigActivity extends SherlockFragmentActivity
 	setResult(RESULT_CANCELED, resultValue);
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		controlLocationProviderStatuc();
+	}
 	
+	public void controlLocationProviderStatuc(){
+		boolean isSomeOfLctProviderEnabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+				locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		if (isSomeOfLctProviderEnabled) {
+			chbLocationSearch.setEnabled(true);
+		}else{
+			chbLocationSearch.setChecked(false);
+			autoSearchOn=false;
+		}
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.config_setting, menu);
@@ -238,10 +274,23 @@ public class ConfigActivity extends SherlockFragmentActivity
 	}
 	
 	
+	
 	@Override
 	public void onClick(View v) {
-		Intent intent= new Intent(this,CityActivity.class);
-		startActivityForResult(intent, REQUEST_CITY);		
+		switch(v.getId()){
+		case R.id.btnSelectCity:
+			Intent intent= new Intent(this,CityActivity.class);
+			startActivityForResult(intent, REQUEST_CITY);	
+			break;
+		case R.id.btnConLocationSetting:
+			startActivity(new Intent(
+			        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+			
+			break;
+		default:
+			break;
+		}
+			
 	}
 
 	@Override

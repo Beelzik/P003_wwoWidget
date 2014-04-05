@@ -32,6 +32,7 @@
     <string name="edCtBarCancel">Cancel</string>
     <string name="editCtEnter">Enter</string>
     <string name="edCityActWrongInput">Wrong input</string>
+    <string name="bttnConLocationSetting">Locations setting</string>
   
 
 </resources>

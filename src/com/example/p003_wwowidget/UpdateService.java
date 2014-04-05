@@ -39,8 +39,6 @@ public class UpdateService extends Service implements OnWeatherDataStore{
 	private WeatherDataCaller caller;
 	int[] ids;
 	
-	
-	
 	RemoteViews rViews;
 	
 	boolean gotLastUpdate=false;
@@ -59,6 +57,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 			case HANDLE_BITMAP:
 				int id=msg.arg1;
 					updateWidget(UpdateService.this, id);
+					stopSelf();
 				break;
 			}
 			
@@ -71,9 +70,6 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 		if(intent.getIntArrayExtra("appWidgetIds")!=null){
 		ids=intent.getIntArrayExtra("appWidgetIds");
 		}else{
-			
-			
-			
 			stopSelf();
 		}
 			for (int id :ids) {
@@ -94,7 +90,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 		}else{
 			float lat, lon;
 			lat=sp.getFloat(ConfigActivity.CONFIG_SP_CITY_LAT+id, 0);
-			lon=sp.getFloat(ConfigActivity.CONFIG_SP_CITY_LON+id, 0);
+			lon=sp.getFloat(ConfigActivity.CONFIG_SP_CITY_LON+id,0);
 			caller.callCityWthData(context, id, lat,lon, 5);
 		}
 		storage.setOnWeatherDataStoreListener(this);
@@ -106,19 +102,6 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
-
-	
-	
-	
-	OnLocaleWWOListener listener= new OnLocaleWWOListener() {
-		
-		@Override
-		public void localeWWOListener(CurrentCondition cc, NearestArea nearestArea,
-				Request request, Weather[] weather) {
-		
-			
-		}
-	};
 	
 	public void updateWidget(Context context,final int id){
 		
@@ -146,8 +129,9 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 					bindHelper.makeFormmtedWthText(data,BindHelper.GET_MAX_TEMP));
 			rViews.setTextViewText(R.id.tvMinTemp, 
 					bindHelper.makeFormmtedWthText(data,BindHelper.GET_MIN_TEMP));
+			if(nearestArea!=null){
 			rViews.setTextViewText(R.id.tvWidCountry, nearestArea.getCountry());
-			rViews.setTextViewText(R.id.tvWidCity, nearestArea.getRegion());
+			rViews.setTextViewText(R.id.tvWidCity, nearestArea.getRegion());}
 			Bitmap btm=bitMap.get(id);
 			if (btm!=null) {
 				rViews.setImageViewBitmap(R.id.imBtnUpdateWeather, btm);
@@ -194,15 +178,10 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 					Message message=handler.obtainMessage(HANDLE_BITMAP, widgetId, 0, bitmap);
 					handler.sendMessage(message);
 				} catch (Exception e) {
-					
 					e.printStackTrace();
-				} 
-				
-				
-				
+				} 		
 			}
 		}).start();
-		
 		
 		gotLastUpdate=true;
 		}else{
@@ -212,7 +191,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 	
 	@Override
 	public void onDestroy() {
-		Log.d("WWO3","onDestroy()");
+		Log.d("WWO3","Service onDestroy()");
 		super.onDestroy();
 	}
 }

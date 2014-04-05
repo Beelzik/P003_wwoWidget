@@ -48,9 +48,9 @@ public class WidgetProvider extends AppWidgetProvider {
          wdgUpdateCooldownMls= Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).
 				  getString(context.getString(R.string.preKeyUpdate), "299999"));
         
-		
-			Intent intent=new Intent("com.example.p003_wwowidget.UpdateService");
-			context.stopService(intent);
+         Intent intent;
+			//intent=new Intent("com.example.p003_wwowidget.UpdateService");
+			//context.stopService(intent);
 			 intent= new Intent(context, UpdateService.class);
 			 for (int i : appWidgetIds) {
 				Log.d("WWO3","provider id="+i);
@@ -90,9 +90,9 @@ public class WidgetProvider extends AppWidgetProvider {
 		      
 		      Log.d("WWO3",storage.getAllKey().toString());
 		      
-		      Intent up=new Intent("com.example.p003_wwowidget.UpdateService");
-		  	context.stopService(up);
-			 up= new Intent(context, UpdateService.class);
+		    //  Intent up=new Intent("com.example.p003_wwowidget.UpdateService");
+		  	//context.stopService(up);
+		      Intent	 up= new Intent(context, UpdateService.class);
 		
 			up.setAction(UPDATE_ALL_WIDGETS);
 			up.putExtra("appWidgetIds", ids);

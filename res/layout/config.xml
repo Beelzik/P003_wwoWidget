@@ -31,11 +31,40 @@
         android:layout_gravity="center"
         android:text="Select city" />
 
-    <CheckBox
-        android:id="@+id/chbLocationSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="automatic location search" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/chbLocationSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="automatic location search" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnConLocationSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="@string/bttnConLocationSetting" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <FrameLayout
           android:id="@+id/ltFrGraph"
