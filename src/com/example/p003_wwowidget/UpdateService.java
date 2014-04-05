@@ -81,6 +81,11 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 	
 	public void buildUpdate(Context context,int id){
 		
+		rViews= new RemoteViews(context.getPackageName(), R.layout.widget);
+		
+		prepareActionItem(context, rViews, id);
+		
+		
 		storage= (WeatherDataStorage) context.getApplicationContext();
 		caller= new WeatherDataCaller(storage);
 		SharedPreferences sp=context.getSharedPreferences(ConfigActivity.CONFIG_SP_NAME, MODE_PRIVATE);
@@ -93,9 +98,25 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 			lon=sp.getFloat(ConfigActivity.CONFIG_SP_CITY_LON+id,0);
 			caller.callCityWthData(context, id, lat,lon, 5);
 		}
-		storage.setOnWeatherDataStoreListener(this);
+		storage.setOnWeatherDataStoreListener(this);	
+	}
+	
+	public void prepareActionItem(Context context, RemoteViews rViews, int id){
+		Intent updateIntent=new Intent(context, WidgetProvider.class);
+		updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+		updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {id});
+		PendingIntent pIntent= PendingIntent.getBroadcast(context, id, updateIntent, 0);
+		rViews.setOnClickPendingIntent(R.id.imBtnUpdateWeather, pIntent);
 		
 		
+		Intent configIntent= new Intent(context, ConfigActivity.class);
+		configIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+		configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+		pIntent=PendingIntent.getActivity(context, id, configIntent, 0);
+		rViews.setOnClickPendingIntent(R.id.laWdgMain, pIntent);
+		
+		AppWidgetManager manager= AppWidgetManager.getInstance(context);	
+		manager.updateAppWidget(id, rViews);
 	}
 	
 	@Override
@@ -116,7 +137,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 		dateFormat.format(new Date(System.currentTimeMillis()));
 		
 		
-		rViews= new RemoteViews(context.getPackageName(), R.layout.widget);
+		
 		
 		rViews.setTextViewText(R.id.tvWidDate, dateFormat.
 				format(new Date(System.currentTimeMillis())));
@@ -139,18 +160,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 		}
 		
 		
-		Intent updateIntent=new Intent(context, WidgetProvider.class);
-		updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {id});
-		PendingIntent pIntent= PendingIntent.getBroadcast(context, id, updateIntent, 0);
-		rViews.setOnClickPendingIntent(R.id.imBtnUpdateWeather, pIntent);
 		
-		
-		Intent configIntent= new Intent(context, ConfigActivity.class);
-		configIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-		configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-		pIntent=PendingIntent.getActivity(context, id, configIntent, 0);
-		rViews.setOnClickPendingIntent(R.id.laWdgMain, pIntent);
 		
 		
 		AppWidgetManager manager= AppWidgetManager.getInstance(context);
