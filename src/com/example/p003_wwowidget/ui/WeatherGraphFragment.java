@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.example.p003_wwowidget.R;
 
+import com.example.p003_wwowidget.storage.WeatherDataStorage;
 import com.example.p003_wwowidget.utils.BindHelper;
 import com.example.wwolibrary.LocaleWwoData.Data;
 import com.example.wwolibrary.LocaleWwoData.Data.Weather;
@@ -37,6 +38,8 @@ public class WeatherGraphFragment extends Fragment implements OnCheckedChangeLis
 	
 	
 	BindHelper bindHelper;
+	
+	WeatherDataStorage storage;
 	
 	private Weather[] weathers;
 	int widgetID;
@@ -63,9 +66,7 @@ public class WeatherGraphFragment extends Fragment implements OnCheckedChangeLis
 		chbZeroTemp.setOnCheckedChangeListener(this);
 		
 		
-		chbMinTemp.setChecked(true);
-		chbZeroTemp.setChecked(true);
-		chbMaxTemp.setChecked(true);
+		
 		
 		graphView.setViewPort(1,4);
 		graphView.getGraphViewStyle().setNumHorizontalLabels(5);
@@ -103,14 +104,20 @@ public class WeatherGraphFragment extends Fragment implements OnCheckedChangeLis
 		super.onActivityCreated(savedInstanceState);
 		
 		widgetID=getArguments().getInt(ConfigActivity.KEY_WIDGET_ID_FOR_FRAGMENT);
+		
+		storage=(WeatherDataStorage) getActivity().getApplicationContext();
+		fragmentData=storage.getWeatherDataById(widgetID);
+		
 		layout.addView(graphView);
 	
 		bindHelper= new BindHelper(getActivity());
 
-		
-				
 				if (fragmentData!=null) 
 				weathers=fragmentData.getWeather();
+				
+				chbMinTemp.setChecked(true);
+				chbZeroTemp.setChecked(true);
+				chbMaxTemp.setChecked(true);
 	}
 
 
