@@ -46,7 +46,7 @@ import com.jjoe64.graphview.LineGraphView;
 
 
 public class ConfigActivity extends SherlockFragmentActivity 
-	implements OnClickListener,OnCheckedChangeListener,OnWeatherDataStore{
+	implements OnClickListener,OnCheckedChangeListener, OnWeatherDataStore{
 
 	
 	
@@ -60,10 +60,15 @@ public class ConfigActivity extends SherlockFragmentActivity
 	public final static String CONFIG_SP_CITY_NAME_="city_name_";
 	public final static String CONFIG_SP_CITY_COUNTRY_="city_country_";
 	
+	public final static String KEY_WIDGET_ID_FOR_FRAGMENT="key_widget_id_for_fragment";
+	
 	final static int REQUEST_CITY=1;
 	WeatherGraphFragment wgFrag;
-	LinearLayout layout;
-	CheckBox chbMinTemp,chbMaxTemp,chbZeroTemp;
+	private LocationManager locationManager;
+	
+	
+	private WeatherDataStorage storage;
+	private WeatherDataCaller caller;
 	
 	private TextView tvStatus; 
 	private CheckBox chbLocationSearch;
@@ -74,60 +79,16 @@ public class ConfigActivity extends SherlockFragmentActivity
 	private Intent resultValue;
 	int widgetID;
 	
-	private boolean minCurveOn=true;
-	private boolean maxCurveOn=true;
-	private boolean zeroTempCurve=true;
+
 	
 	private String cityName;
 	private String countryName;
 	private Float cityLat,cityLon;
-	private WeatherDataStorage storage;
-	private WeatherDataCaller caller;
-	private Data data;
-	private Weather[] weathers;
-	private LineGraphView graphView;
-	private GraphViewSeries seriesMax;
-	private GraphViewSeries seriesMin;
-	private GraphViewSeries seriesZero;
-	private LocationManager locationManager;
 	
-	BindHelper bindHelper;
 	
-	Handler handler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			layout= (LinearLayout) wgFrag.getView().findViewById(R.id.grWth);
-			graphView = new LineGraphView(
-				     ConfigActivity.this// context
-				      , "Weather Graph " // heading
-				);
-			
-			layout.addView(graphView);
-			chbMinTemp=(CheckBox) wgFrag.getView().findViewById(R.id.chbWthFrMinTemp);
-			chbMaxTemp=(CheckBox) wgFrag.getView().findViewById(R.id.chbWthFrMaxTemp);
-			chbZeroTemp=(CheckBox) wgFrag.getView().findViewById(R.id.chbWthFrZeroTemp);
-			chbMaxTemp.setOnCheckedChangeListener(ConfigActivity.this);
-			chbMinTemp.setOnCheckedChangeListener(ConfigActivity.this);
-			chbZeroTemp.setOnCheckedChangeListener(ConfigActivity.this);
-			
-			
-			chbMinTemp.setChecked(true);
-			chbZeroTemp.setChecked(true);
-			chbMaxTemp.setChecked(true);
-			
-			graphView.setViewPort(1,4);
-			graphView.getGraphViewStyle().setNumHorizontalLabels(5);
-			graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.CENTER);
-			graphView.setShowLegend(true);
-			graphView.getGraphViewStyle().setLegendWidth(300);
-			graphView.getGraphViewStyle().setLegendBorder(30);
-			graphView.getGraphViewStyle().setLegendSpacing(20);
-			graphView.setDrawDataPoints(true);
-		
-			
-		}
-	};
+
+	
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -148,46 +109,27 @@ public class ConfigActivity extends SherlockFragmentActivity
 			finish();
 		}
 		
-		//данные кривой 0-ой температуры
-		GraphViewSeriesStyle seriesStyle= new GraphViewSeriesStyle(Color.CYAN, 2);
-		
-		
-		GraphViewData[] zeroData=new GraphViewData[]{
-				 new GraphViewData(1d,0d),
-				 new GraphViewData(2,0d),
-				 new GraphViewData(3,0d),
-				 new GraphViewData(4,0d),
-				 new GraphViewData(5,0d),};
-		seriesZero=new GraphViewSeries("zero",
-				seriesStyle,zeroData		
-		);
-		
-		
-		wgFrag=new WeatherGraphFragment();
-		getSupportFragmentManager().beginTransaction().replace(R.id.ltFrGraph, wgFrag).commit();
-		
 		storage=(WeatherDataStorage) this.getApplication();
 		caller=new WeatherDataCaller(storage);
 		storage.setOnWeatherDataStoreListener(this);
+		
+		wgFrag=new WeatherGraphFragment();
+		
+		Bundle bundle=new Bundle();
+		bundle.putInt(KEY_WIDGET_ID_FOR_FRAGMENT, widgetID);
+		
+		wgFrag.setArguments(bundle);
+		
+		getSupportFragmentManager().beginTransaction().replace(R.id.ltFrGraph, wgFrag).commit();
+		
+		
 		
 		
 		
 		
 		// в layout= (LinearLayout) wgFrag.getView().findViewById(R.id.grWth) приходит ноль, поэтому вот
 		
-		new Thread(new Runnable() {	
-			@Override
-			public void run() {
-				try {
-					
-						TimeUnit.MILLISECONDS.sleep(50);
-					Message message=handler.obtainMessage();
-					handler.sendMessage(message);
-				} catch (InterruptedException e) {
-				}
-				
-			}
-		}).start();
+	
 		
 		
 		autoSearchOn=sp.getBoolean(CONFIG_SP_SEARCH_TYPE+widgetID,false);
@@ -227,11 +169,8 @@ public class ConfigActivity extends SherlockFragmentActivity
 	bar.setHomeButtonEnabled(true);
 	bar.setDisplayHomeAsUpEnabled(true);
 	
-	bindHelper= new BindHelper(this);
+	
 
-	data=storage.getWeatherDataById(widgetID);
-	if (data!=null) 
-	weathers=data.getWeather();
 	
 	resultValue=new Intent();
 	resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widgetID);
@@ -325,56 +264,8 @@ public class ConfigActivity extends SherlockFragmentActivity
 			}
 			edit.commit();
 			break;
-		case R.id.chbWthFrMinTemp:
-			minCurveOn=isChecked;
-			
-			data=storage.getWeatherDataById(widgetID);
-			if(data!=null)
-			weathers=data.getWeather();
-			
-			if (isChecked) {
-				if (data!=null) {
-				GraphViewData[] graphDataMinTemp=bindHelper.
-						makeGraphWeatherData(weathers, BindHelper.GET_MIN_TEMP) ;
-				seriesMin=new GraphViewSeries("min temp",
-						new GraphViewSeriesStyle(Color.BLUE,5),graphDataMinTemp);
-				graphView.addSeries(seriesMin);	}
-			}else{
-				if(seriesMax!=null)
-					graphView.removeSeries(seriesMin);
-			}
-			break;
-		case R.id.chbWthFrMaxTemp:
-			
-			data=storage.getWeatherDataById(widgetID);
-			if(data!=null)
-			weathers=data.getWeather();
-			
-			maxCurveOn=isChecked;
-			if (isChecked) {
-				if (data!=null) {
-				
-				GraphViewData[] graphDataMaxTemp=bindHelper
-						.makeGraphWeatherData(weathers, BindHelper.GET_MAX_TEMP);
-				seriesMax=new GraphViewSeries("max temp",
-						new GraphViewSeriesStyle(Color.RED,5),graphDataMaxTemp);
-				graphView.addSeries(seriesMax);}
-			} else {
-				if(seriesMax!=null)
-				graphView.removeSeries(seriesMax);
-			}
-			break;
-		case R.id.chbWthFrZeroTemp:
-			zeroTempCurve=isChecked;
-			if (isChecked) {
-		
-				graphView.addSeries(seriesZero);
-				
-			} else {
-				if(seriesZero!=null)
-				graphView.removeSeries(seriesZero);
-			}
-			break;
+			default :
+				break;
 		}
 		
 		
@@ -416,32 +307,7 @@ public class ConfigActivity extends SherlockFragmentActivity
 	}
 
 
-	@Override
-	public void onStoredWthData(int widgetId) {
-		if(widgetId==widgetID){
-		graphView.removeAllSeries();
-		Data data=storage.getWeatherDataById(widgetID);
-		weathers=data.getWeather();
-		if (minCurveOn) {
-			
-			GraphViewData[] graphDataMinTemp=bindHelper.
-					makeGraphWeatherData(weathers, BindHelper.GET_MIN_TEMP) ;
-			seriesMin=new GraphViewSeries("min temp",
-					new GraphViewSeriesStyle(Color.BLUE,5),graphDataMinTemp);
-			graphView.addSeries(seriesMin);
-		}
-		if (maxCurveOn) {
-			GraphViewData[] graphDataMaxTemp=bindHelper
-					.makeGraphWeatherData(weathers, BindHelper.GET_MAX_TEMP);
-			seriesMax=new GraphViewSeries("max temp",
-					new GraphViewSeriesStyle(Color.RED,5),graphDataMaxTemp);
-			graphView.addSeries(seriesMax);
-		}
-		if(zeroTempCurve){
-			graphView.addSeries(seriesZero);
-		}
-		}
-	}
+	
 	
 	@Override
 	protected void onDestroy() {
@@ -455,6 +321,12 @@ public class ConfigActivity extends SherlockFragmentActivity
 		} catch (CanceledException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onStoredWthData(int widgetId) {
+		Data data=storage.getWeatherDataById(widgetID);
+		wgFrag.setChangeData(data, widgetId);
 	}
 	
 	
