@@ -122,15 +122,7 @@ public class ConfigActivity extends SherlockFragmentActivity
 		
 		getSupportFragmentManager().beginTransaction().replace(R.id.ltFrGraph, wgFrag).commit();
 		
-		
-		
-		
-		
-		
-		// в layout= (LinearLayout) wgFrag.getView().findViewById(R.id.grWth) приходит ноль, поэтому вот
-		
-	
-		
+
 		
 		autoSearchOn=sp.getBoolean(CONFIG_SP_SEARCH_TYPE+widgetID,false);
 		setContentView(R.layout.config);
