@@ -13,7 +13,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 
 import com.example.p003_wwowidget.R;
-import com.example.p003_wwowidget.storage.WeatherDataStorage;
+
 import com.example.p003_wwowidget.utils.BindHelper;
 import com.example.wwolibrary.LocaleWwoData.Data;
 import com.example.wwolibrary.LocaleWwoData.Data.Weather;
