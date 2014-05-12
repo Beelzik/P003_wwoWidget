@@ -4,7 +4,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -17,7 +16,6 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -26,12 +24,10 @@ import com.example.p003_wwowidget.storage.WeatherDataCaller;
 import com.example.p003_wwowidget.storage.WeatherDataStorage;
 import com.example.p003_wwowidget.ui.ConfigActivity;
 import com.example.p003_wwowidget.utils.BindHelper;
-import com.example.wwolibrary.OnLocaleWWOListener;
 import com.example.wwolibrary.LocaleWwoData.Data;
 import com.example.wwolibrary.LocaleWwoData.Data.CurrentCondition;
 import com.example.wwolibrary.LocaleWwoData.Data.NearestArea;
-import com.example.wwolibrary.LocaleWwoData.Data.Request;
-import com.example.wwolibrary.LocaleWwoData.Data.Weather;
+
 
 public class UpdateService extends Service implements OnWeatherDataStore{
 
@@ -132,7 +128,7 @@ HashMap<Integer, Bitmap> bitMap = new HashMap<Integer, Bitmap>();
 		NearestArea nearestArea=data.getNearest_area();
 		
 		
-		String  format="EEE dd.mm.yyyy";
+		String  format="EEE dd.MM.yyyy";
 		SimpleDateFormat dateFormat= new SimpleDateFormat(format);
 		dateFormat.format(new Date(System.currentTimeMillis()));
 		

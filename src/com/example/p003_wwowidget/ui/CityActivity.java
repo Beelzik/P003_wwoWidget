@@ -25,10 +25,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.example.p003_wwowidget.R;
-import com.example.p003_wwowidget.R.id;
-import com.example.p003_wwowidget.R.layout;
-import com.example.p003_wwowidget.R.menu;
-import com.example.p003_wwowidget.R.string;
+
 import com.example.p003_wwowidget.base.DataBase;
 
 
@@ -87,7 +84,7 @@ LoaderCallbacks<Cursor>,OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> data, View view, int position, long id) {
 	long[] checked=lvCity.getCheckedItemIds();
-	//id=data.getC
+
 	Log.d("WWO3", "id: "+id);
 	Log.d("WWO3", "position: "+position);
 //	Log.d("WWO3", "checked: "+checked[0]);

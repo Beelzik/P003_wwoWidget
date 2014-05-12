@@ -1,8 +1,5 @@
 package com.example.p003_wwowidget.ui;
 
-import java.security.Provider;
-import java.util.concurrent.TimeUnit;
-
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
 import android.app.Service;
@@ -10,40 +7,27 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
-import android.graphics.Paint.Align;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-
 import com.example.p003_wwowidget.R;
 import com.example.p003_wwowidget.WidgetProvider;
 import com.example.p003_wwowidget.base.DataBase;
 import com.example.p003_wwowidget.storage.OnWeatherDataStore;
 import com.example.p003_wwowidget.storage.WeatherDataCaller;
 import com.example.p003_wwowidget.storage.WeatherDataStorage;
-import com.example.p003_wwowidget.utils.BindHelper;
 import com.example.wwolibrary.LocaleWwoData.Data;
-import com.example.wwolibrary.LocaleWwoData.Data.Weather;
-import com.jjoe64.graphview.GraphView.GraphViewData;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
-import com.jjoe64.graphview.LineGraphView;
 
 
 public class ConfigActivity extends SherlockFragmentActivity 

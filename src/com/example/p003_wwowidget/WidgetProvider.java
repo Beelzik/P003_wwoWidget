@@ -49,8 +49,6 @@ public class WidgetProvider extends AppWidgetProvider {
 				  getString(context.getString(R.string.preKeyUpdate), "299999"));
         
          Intent intent;
-			//intent=new Intent("com.example.p003_wwowidget.UpdateService");
-			//context.stopService(intent);
 			 intent= new Intent(context, UpdateService.class);
 			 for (int i : appWidgetIds) {
 				Log.d("WWO3","provider id="+i);
@@ -88,10 +86,8 @@ public class WidgetProvider extends AppWidgetProvider {
 		      
 		      WeatherDataStorage storage=(WeatherDataStorage) context.getApplicationContext();
 		      
-		      Log.d("WWO3",storage.getAllKey().toString());
+		//      Log.d("WWO3",storage.getAllKey().toString());
 		      
-		    //  Intent up=new Intent("com.example.p003_wwowidget.UpdateService");
-		  	//context.stopService(up);
 		      Intent	 up= new Intent(context, UpdateService.class);
 		
 			up.setAction(UPDATE_ALL_WIDGETS);
