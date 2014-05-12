@@ -64,7 +64,7 @@ LoaderCallbacks<Cursor>,OnItemClickListener{
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.city);
-		db= new DataBase(this);
+		db=DataBase.getInstance(this);
 		db.open();
 
 		adapter= new SimpleCursorAdapter(this, R.layout.item_city, null, from, to, 0);

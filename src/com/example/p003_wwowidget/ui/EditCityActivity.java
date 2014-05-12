@@ -46,7 +46,7 @@ public class EditCityActivity extends SherlockActivity implements OnClickListene
 		edLon=(EditText) findViewById(R.id.edCtLon);
 		btnEnter=(Button) findViewById(R.id.btnEdCtEnter);
 		btnEnter.setOnClickListener(this);
-		db= new DataBase(this);
+		db=DataBase.getInstance(this);
 		db.open();
 		intent=getIntent();
 		action=intent.getAction();

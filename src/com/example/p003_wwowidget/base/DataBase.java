@@ -14,10 +14,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 public class DataBase {
 	
+	
+	private static volatile DataBase instance;
 	private SQLiteDatabase dbLite;
 	private DBHelper dbH;
 	private Context context;
@@ -48,11 +49,26 @@ public class DataBase {
 	                    + "country text not null, "
 	                    + "timezone_id text);";
 	
-	public DataBase(Context ctx) {
+	private DataBase(Context ctx) {
 		context=ctx;
 		dbH=new DBHelper(context, DB_NAME, null, DB_VERSION);
 	}
 	
+	
+	public static DataBase getInstance(Context context){
+		DataBase localeInstance;
+		localeInstance=instance;
+		if (localeInstance==null) {
+			synchronized (DataBase.class) {
+				localeInstance=instance;
+				if(localeInstance==null){
+					instance=localeInstance=new DataBase(context);
+				}
+			}
+		}
+		return localeInstance;
+		
+	}
 	
 	public void open(){
 		dbLite=dbH.getWritableDatabase();

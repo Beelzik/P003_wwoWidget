@@ -30,6 +30,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+
 import com.example.p003_wwowidget.R;
 import com.example.p003_wwowidget.WidgetProvider;
 import com.example.p003_wwowidget.base.DataBase;
@@ -48,9 +49,6 @@ import com.jjoe64.graphview.LineGraphView;
 public class ConfigActivity extends SherlockFragmentActivity 
 	implements OnClickListener,OnCheckedChangeListener, OnWeatherDataStore{
 
-	
-	
-	
 	public final static String CONFIG_SP_NAME="con_sp";
 	public final static String CONFIG_SP_SEARCH_TYPE="key_auto_search_";
 	
